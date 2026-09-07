@@ -1,0 +1,45 @@
+name: Sunucuya yayınla
+
+# main dalına her push'ta çalışır; ayrıca Actions sekmesinden elle tetiklenebilir.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: SSH anahtarını hazırla
+        run: |
+          mkdir -p ~/.ssh
+          printf '%s\n' "${{ secrets.SSH_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -p "${SSH_PORT:-22}" -H "${{ secrets.SSH_HOST }}" >> ~/.ssh/known_hosts 2>/dev/null
+        env:
+          SSH_PORT: ${{ secrets.SSH_PORT }}
+
+      - name: Yayınla
+        run: |
+          ssh -i ~/.ssh/deploy_key \
+              -p "${SSH_PORT:-22}" \
+              -o BatchMode=yes \
+              "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}" \
+              "cd '${{ secrets.APP_DIR }}' && ./deploy.sh"
+        env:
+          SSH_PORT: ${{ secrets.SSH_PORT }}
+
+      - name: Siteyi doğrula
+        run: |
+          for i in 1 2 3; do
+            kod=$(curl -s -o /dev/null -w '%{http_code}' --max-time 20 "${{ secrets.SITE_URL }}/login.php" || true)
+            echo "deneme $i → HTTP $kod"
+            [ "$kod" = "200" ] && exit 0
+            sleep 5
+          done
+          echo "Giriş sayfası 200 dönmedi (son kod: $kod)"; exit 1
