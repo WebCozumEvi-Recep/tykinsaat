@@ -1,0 +1,13 @@
+# Sırlar — asla depoya girmez (depo herkese açık)
+config.php
+tyk-config.php
+
+# Kullanıcı verisi
+uploads/*
+!uploads/.gitkeep
+
+# Yerel / geçici
+*.bak
+.DS_Store
+.claude/
+tema-onizleme.html
