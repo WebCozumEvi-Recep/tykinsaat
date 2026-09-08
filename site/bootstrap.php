@@ -15,16 +15,24 @@ if ($__db_var) {
     function row(string $sql, array $p = []) { throw new RuntimeException('db yok'); }
     function q(string $sql, array $p = []) { throw new RuntimeException('db yok'); }
     function val(string $sql, array $p = []) { throw new RuntimeException('db yok'); }
-    if (!defined('UPLOAD_URL')) define('UPLOAD_URL', '../uploads/');
+    if (!defined('UPLOAD_URL')) define('UPLOAD_URL', 'uploads/');
 }
 require_once $__kok . '/inc/site.php';
 
-/* Sayfa /site/ altından mı yoksa kökten mi servis ediliyor?
-   nginx'te .htaccess çalışmadığı için kök index.php siteyi doğrudan dahil eder. */
-$__dizin = rtrim(str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME'] ?? '')), '/');
-$__site_altinda = substr($__dizin, -5) === '/site' || $__dizin === '/site';
-define('VARLIK', $__site_altinda ? '' : 'site/');   // css, sitemap gibi site dosyaları
-define('PANEL',  $__site_altinda ? '../' : '');     // login.php gibi panel dosyaları
+/* Varlık yolları: sayfa hem /site/ altından hem kökten (kök index.php
+   ziyaretçiye siteyi dahil eder) servis edilebildiği için, yollar
+   SCRIPT_NAME tahminine değil dosya sistemi konumuna göre hesaplanır. */
+(function () use (&$__kok) {
+    $taban = '';
+    $dr = $_SERVER['DOCUMENT_ROOT'] ?? '';
+    $dr = $dr ? realpath($dr) : '';
+    $kok = realpath($__kok);            // public_html (site/ dizininin üstü)
+    if ($dr && $kok && str_starts_with($kok, $dr)) {
+        $taban = rtrim(str_replace('\\', '/', substr($kok, strlen($dr))), '/');
+    }
+    define('PANEL',  $taban . '/');           // login.php, uploads/ gibi panel yolları
+    define('VARLIK', $taban . '/site/');      // site.css gibi site dosyaları
+})();
 
 /** Sitenin kendi adresi (canonical, sitemap, JSON-LD için). */
 function site_adres(): string {

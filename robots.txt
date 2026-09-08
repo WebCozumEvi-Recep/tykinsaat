@@ -6,6 +6,6 @@ Disallow: /login.php
 Disallow: /ayarlar.php
 Disallow: /site_yonetimi.php
 Disallow: /raporlar.php
-Disallow: /site/
+Disallow: /site/index.php
 
 Sitemap: https://tykinsaat.com.tr/sitemap.php
