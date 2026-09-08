@@ -54,15 +54,36 @@ h1,h2,h3,h4,.kot,.rakam,.olcu{
 
 /* ---------- üst bar ---------- */
 .ust{position:sticky;top:0;z-index:50;background:var(--beton);border-bottom:1px solid var(--cizgi)}
-.ust-ic{display:flex;align-items:center;gap:1rem;padding:.7rem var(--pad);max-width:1280px;margin:0 auto;min-height:60px}
+.ust-ic{display:flex;align-items:center;gap:.6rem;padding:.7rem var(--pad);max-width:1280px;margin:0 auto;min-height:60px;position:relative}
 .marka{display:flex;align-items:center;gap:.6rem;text-decoration:none;margin-right:auto}
 .marka-im{width:30px;height:30px;flex:none}
 .marka b{font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:1.45rem;letter-spacing:.01em;display:block}
 .marka span{font-size:.74rem;color:var(--metin-2);display:block;margin-top:-2px}
-.menu{display:none;gap:1.3rem}
-.menu a{text-decoration:none;color:var(--metin-2);font-weight:500;padding:.2rem 0;border-bottom:2px solid transparent}
-.menu a:hover,.menu a:focus-visible{color:var(--metin);border-bottom-color:var(--sari)}
-@media (min-width:980px){.menu{display:flex}}
+.menu a{text-decoration:none;color:var(--metin-2);font-weight:500}
+.menu a:hover,.menu a:focus-visible{color:var(--metin)}
+
+/* mobil: hamburger ile açılan panel */
+.hamb{display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;
+  border:1.5px solid var(--arduvaz);border-radius:var(--r);background:transparent;color:var(--arduvaz);cursor:pointer;padding:0}
+.hamb svg{width:22px;height:22px}
+.hamb:hover,.hamb:focus-visible{background:var(--arduvaz);color:var(--beton)}
+.menu{display:none;position:absolute;top:100%;left:0;right:0;background:var(--beton);
+  border-bottom:1px solid var(--cizgi);box-shadow:0 14px 28px rgba(22,32,42,.14);
+  flex-direction:column;padding:.3rem var(--pad) .8rem}
+.menu.acik{display:flex}
+.menu a{padding:.85rem 0;border-bottom:1px solid var(--cizgi);
+  font-family:"Barlow Condensed",sans-serif;font-weight:600;font-size:1.25rem;color:var(--metin)}
+.menu a:last-child{border-bottom:0}
+
+/* masaüstü: hamburger gizlenir, menü yatay şeride döner */
+@media (min-width:980px){
+  .hamb{display:none}
+  .menu{display:flex;position:static;flex-direction:row;gap:1.3rem;padding:0;
+    background:none;border:0;box-shadow:none}
+  .menu a{padding:.2rem 0;border-bottom:2px solid transparent;font-family:Barlow,sans-serif;
+    font-weight:500;font-size:1rem;color:var(--metin-2)}
+  .menu a:hover,.menu a:focus-visible{color:var(--metin);border-bottom-color:var(--sari)}
+}
 
 .btn{display:inline-flex;align-items:center;gap:.5rem;white-space:nowrap;
   font-family:"Barlow Condensed",sans-serif;font-weight:600;font-size:1.05rem;
@@ -250,4 +271,4 @@ section[id]{scroll-margin-top:5rem}
 }
 
 /* firma logosu yüklendiyse markanın yerini alır */
-img.marka-im{width:auto;height:34px;max-width:150px;object-fit:contain}
+img.marka-im{width:auto;height:36px;max-width:160px;object-fit:contain}

@@ -82,21 +82,10 @@ $ld = [
 <header class="ust">
   <div class="ust-ic">
     <a class="marka" href="#tepe">
-      <?php if (!empty($a['logo'])): ?>
-      <img class="marka-im" src="<?= PANEL . UPLOAD_URL . e($a['logo']) ?>" alt="<?= e($a['firma_ad']) ?> logosu">
-      <?php else: ?>
-      <svg class="marka-im" viewBox="0 0 32 32" aria-hidden="true">
-        <rect x="1" y="4" width="30" height="4" fill="#C9A227"/>
-        <rect x="1" y="8" width="30" height="5" fill="#B4603C"/>
-        <rect x="1" y="13" width="30" height="6" fill="#8C8A6B"/>
-        <rect x="1" y="19" width="30" height="9" fill="#5A6773"/>
-        <rect x="12" y="4" width="8" height="24" fill="#EEF1F3"/>
-        <rect x="12" y="4" width="8" height="3" fill="#F2B705"/>
-      </svg>
-      <?php endif; ?>
+      <?php if (!empty($a['logo'])): ?><img class="marka-im" src="<?= PANEL . UPLOAD_URL . e($a['logo']) ?>" alt="<?= e($a['firma_ad']) ?> logosu"><?php endif; ?>
       <span><b><?= e(mb_strtoupper($a['firma_ad'], 'UTF-8')) ?></b><span><?= e($konum) ?></span></span>
     </a>
-    <nav class="menu" aria-label="Bölümler">
+    <nav class="menu" id="menu" aria-label="Bölümler">
       <a href="#hizmetler">Hizmetler</a>
       <a href="#kuyu-temel">Kuyu temel nedir</a>
       <a href="#surec">Nasıl çalışıyoruz</a>
@@ -109,6 +98,11 @@ $ld = [
       </svg>
       Saha<span class="uzun"> Takip</span> Girişi
     </a>
+    <button class="hamb" id="hambDugme" type="button" aria-label="Menüyü aç" aria-expanded="false" aria-controls="menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
+        <path d="M4 7h16M4 12h16M4 17h16"/>
+      </svg>
+    </button>
   </div>
 </header>
 
@@ -369,6 +363,22 @@ $ld = [
 </footer>
 
 <script>
+// Mobil menü
+(function () {
+  var dugme = document.getElementById('hambDugme'), menu = document.getElementById('menu');
+  if (!dugme || !menu) return;
+  function ayarla(acik) {
+    menu.classList.toggle('acik', acik);
+    dugme.setAttribute('aria-expanded', acik ? 'true' : 'false');
+    dugme.setAttribute('aria-label', acik ? 'Menüyü kapat' : 'Menüyü aç');
+  }
+  dugme.addEventListener('click', function () { ayarla(!menu.classList.contains('acik')); });
+  menu.addEventListener('click', function (o) { if (o.target.tagName === 'A') ayarla(false); });
+  document.addEventListener('keydown', function (o) {
+    if (o.key === 'Escape' && menu.classList.contains('acik')) { ayarla(false); dugme.focus(); }
+  });
+})();
+
 (function () {
   var okuma = document.getElementById('kot');
   if (!okuma) return;
