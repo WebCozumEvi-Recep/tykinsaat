@@ -1,4 +1,12 @@
 Options -Indexes
-<FilesMatch "^(config\.php|schema\.sql)$">
+<FilesMatch "^(config\.php|.*schema\.sql)$">
   Require all denied
 </FilesMatch>
+
+# Alan adının kökü tanıtım sitesini açsın; /login.php ve panel sayfaları etkilenmez.
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteRule ^$ site/index.php [L]
+  RewriteRule ^robots\.txt$ site/robots.php [L]
+  RewriteRule ^sitemap\.xml$ site/sitemap.php [L]
+</IfModule>

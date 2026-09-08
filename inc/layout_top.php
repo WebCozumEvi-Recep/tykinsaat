@@ -5,6 +5,7 @@ $__u = user(); $__flash = flash();
 $__gruplar = patron() || finans_gorur()
   ? ['Saha' => [['index.php','squares-four','Panel'],['santiyeler.php','crane-tower','Şantiyeler'],['personel.php','users-three','Personel'],['makineler.php','tractor','Makineler'],['is_gunlugu.php','notebook','İş Günlüğü']],
      'Finans' => [['musteriler.php','handshake','Müşteriler'],['tahsilat.php','coins','Tahsilat'],['gider.php','receipt','Giderler'],['tedarikciler.php','factory','Tedarikçiler'],['raporlar.php','chart-line-up','Raporlar']],
+     'Web sitesi' => [['site_yonetimi.php','storefront','Site Yönetimi']],
      '' => [['ayarlar.php','gear','Ayarlar']]]
   : ['Bugün' => [['index.php','house','Ana Sayfa'],['puantaj.php','check-circle','Puantaj'],['gider_form.php','receipt','Gider Ekle'],['is_gunlugu.php','notebook','İş Kaydı'],['makineler.php','tractor','Makineler']]];
 $__menu = array_merge(...array_values($__gruplar));
