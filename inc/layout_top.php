@@ -23,7 +23,7 @@ $__tarih = date('j') . ' ' . $__aylar[(int)date('n')] . ' ' . date('Y') . ' ' . 
 ?><!DOCTYPE html>
 <html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title><?= e($baslik ?? APP_NAME) ?> · <?= APP_NAME ?></title>
-<link rel="stylesheet" href="assets/app.css"><meta name="theme-color" content="#f4f5f7"></head>
+<link rel="stylesheet" href="<?= e(varlik('assets/app.css')) ?>"><meta name="theme-color" content="#f4f5f7"></head>
 <body class="<?= patron()||finans_gorur() ? 'mod-patron' : 'mod-saha' ?>">
 <?= file_get_contents(__DIR__ . '/../assets/icons.svg') ?>
 <a class="atla" href="#icerik">İçeriğe atla</a>

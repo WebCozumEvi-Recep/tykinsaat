@@ -61,7 +61,7 @@ $ld = [
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="<?= VARLIK ?>site.css">
+<link rel="stylesheet" href="<?= e(varlik(VARLIK . 'site.css', __DIR__ . '/site.css')) ?>">
 <script type="application/ld+json"><?= json_encode($ld, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) ?></script>
 <?php if ($a['analytics_id']): ?>
 <script async src="https://www.googletagmanager.com/gtag/js?id=<?= e($a['analytics_id']) ?>"></script>

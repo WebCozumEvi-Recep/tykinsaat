@@ -1,5 +1,11 @@
 <?php
 function e($s): string { return htmlspecialchars((string)($s ?? ''), ENT_QUOTES, 'UTF-8'); }
+/** Stil/script yoluna dosya tarihini ekler; tarayıcı eski sürümü önbellekten sunmaz. */
+function varlik(string $yol, ?string $tam_yol = null): string {
+    $d = $tam_yol ?? (__DIR__ . '/../' . ltrim($yol, '/'));
+    $t = is_file($d) ? filemtime($d) : 0;
+    return $yol . ($t ? '?v=' . $t : '');
+}
 function para($n, bool $sembol = true): string {
     $n = (float)$n; $s = number_format(abs($n), 2, ',', '.');
     return ($n < 0 ? '-' : '') . ($sembol ? '₺' : '') . $s;

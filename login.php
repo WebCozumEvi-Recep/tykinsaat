@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $hata = 'Kullanıcı adı veya şifre hatalı.';
 }
 $firma = row("SELECT * FROM firma WHERE id=1");
-?><!DOCTYPE html><html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Giriş · <?= APP_NAME ?></title><link rel="stylesheet" href="assets/app.css"></head>
+?><!DOCTYPE html><html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Giriş · <?= APP_NAME ?></title><link rel="stylesheet" href="<?= e(varlik('assets/app.css')) ?>"></head>
 <body><?= file_get_contents(__DIR__ . '/assets/icons.svg') ?><div class="login"><div class="kart">
   <div class="logo"><?php if (!empty($firma['logo'])): ?><img src="<?= UPLOAD_URL . e($firma['logo']) ?>" alt="<?= e($firma['ad'] ?? APP_NAME) ?>"><?php else: ?><svg class="ic" aria-hidden="true"><use href="#i-crane-tower"></use></svg><?php endif; ?></div>
   <?php if (empty($firma['logo'])): ?><h2 style="text-align:center;margin:0 0 1.2rem"><?= e($firma['ad'] ?? APP_NAME) ?></h2><?php else: ?><div style="margin-bottom:1.2rem"></div><?php endif; ?>
