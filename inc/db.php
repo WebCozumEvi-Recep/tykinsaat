@@ -1,7 +1,12 @@
 <?php
 // Yapılandırma: önce webroot DIŞINDAKİ dosya (canlı sunucu), yoksa proje içindeki (yerel geliştirme)
 (function () {
-    foreach ([__DIR__ . '/../../tyk-config.php', __DIR__ . '/../config.php'] as $__c) {
+    $__yollar = [
+        __DIR__ . '/../../private/tyk-config.php',  // HestiaCP (open_basedir'e açık, web'den erişilemez)
+        __DIR__ . '/../../tyk-config.php',          // genel: webroot'un bir üstü
+        __DIR__ . '/../config.php',                 // yerel geliştirme
+    ];
+    foreach ($__yollar as $__c) {
         if (is_file($__c)) { require_once $__c; return; }
     }
     http_response_code(500);
