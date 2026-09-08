@@ -82,8 +82,11 @@ $ld = [
 <header class="ust">
   <div class="ust-ic">
     <a class="marka" href="#tepe">
-      <?php if (!empty($a['logo'])): ?><img class="marka-im" src="<?= PANEL . UPLOAD_URL . e($a['logo']) ?>" alt="<?= e($a['firma_ad']) ?> logosu"><?php endif; ?>
-      <span><b><?= e(mb_strtoupper($a['firma_ad'], 'UTF-8')) ?></b><span><?= e($konum) ?></span></span>
+      <?php if (!empty($a['logo'])): ?>
+        <img class="marka-im" src="<?= PANEL . UPLOAD_URL . e($a['logo']) ?>" alt="<?= e($a['firma_ad']) ?>">
+      <?php else: ?>
+        <span><b><?= e(mb_strtoupper($a['firma_ad'], 'UTF-8')) ?></b><span><?= e($konum) ?></span></span>
+      <?php endif; ?>
     </a>
     <nav class="menu" id="menu" aria-label="Bölümler">
       <a href="#hizmetler">Hizmetler</a>

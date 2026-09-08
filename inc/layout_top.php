@@ -1,6 +1,7 @@
 <?php
 // $baslik ve isteğe bağlı $geri (url) beklenir
-$__u = user(); $__flash = flash();
+require_once __DIR__ . '/site.php';
+$__u = user(); $__flash = flash(); $__firma = firma_bilgi();
 // [url, ikon, etiket] üçlüleri; ikonlar assets/icons.svg sprite'ından
 $__gruplar = patron() || finans_gorur()
   ? ['Saha' => [['index.php','squares-four','Panel'],['santiyeler.php','crane-tower','Şantiyeler'],['personel.php','users-three','Personel'],['makineler.php','tractor','Makineler'],['is_gunlugu.php','notebook','İş Günlüğü']],
@@ -27,7 +28,13 @@ $__tarih = date('j') . ' ' . $__aylar[(int)date('n')] . ' ' . date('Y') . ' ' . 
 <?= file_get_contents(__DIR__ . '/../assets/icons.svg') ?>
 <a class="atla" href="#icerik">İçeriğe atla</a>
 <aside class="sidebar" id="menu">
-  <a class="brand" href="index.php"><span class="brand-mark"><?= ikon('crane-tower') ?></span><span class="brand-ad"><?= APP_NAME ?><small>Saha yönetimi</small></span></a>
+  <a class="brand" href="index.php">
+    <?php if (!empty($__firma['logo'])): ?>
+      <img class="brand-logo" src="<?= UPLOAD_URL . e($__firma['logo']) ?>" alt="<?= e($__firma['ad'] ?? APP_NAME) ?>">
+    <?php else: ?>
+      <span class="brand-mark"><?= ikon('crane-tower') ?></span><span class="brand-ad"><?= APP_NAME ?><small>Saha yönetimi</small></span>
+    <?php endif; ?>
+  </a>
   <nav aria-label="Ana menü"><?php foreach ($__gruplar as $__g => $__ler): ?>
     <?php if ($__g): ?><p class="nav-grup"><?= $__g ?></p><?php endif; ?>
     <?php foreach ($__ler as [$__mh,$__mi,$__mt]): ?><a href="<?= $__mh ?>" class="<?= $__cur===$__mh?'aktif':'' ?>" <?= $__cur===$__mh?'aria-current="page"':'' ?>><?= ikon($__mi) ?><?= $__mt ?></a><?php endforeach; ?>
