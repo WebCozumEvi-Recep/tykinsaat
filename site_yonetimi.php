@@ -29,6 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         site_kaydet([
             'seo_baslik'=>post('seo_baslik'), 'seo_aciklama'=>post('seo_aciklama'), 'seo_anahtar'=>post('seo_anahtar'),
             'site_url'=>rtrim(post('site_url'), '/'), 'og_gorsel'=>post('og_gorsel'),
+            'https_zorla'=>post('https_zorla') ? '1' : '0', 'www_tercihi'=>post('www_tercihi'),
             'dogrulama_google'=>post('dogrulama_google'), 'dogrulama_bing'=>post('dogrulama_bing'),
             'dogrulama_yandex'=>post('dogrulama_yandex'), 'analytics_id'=>post('analytics_id'),
             'gtm_id'=>post('gtm_id'), 'ekstra_head'=>post('ekstra_head'),
@@ -141,6 +142,17 @@ try { val("SELECT 1 FROM site_ayar LIMIT 1"); } catch (Throwable $ex) { $kurulu 
   <label class="alan"><span>Site adresi</span><input type="url" name="site_url" value="<?= e($a['site_url']) ?>" placeholder="https://www.tykinsaat.com">
     <small>Canonical adres, site haritası ve paylaşım kartları için gerekli.</small></label>
   <label class="alan"><span>Paylaşım görseli (tam adres)</span><input type="url" name="og_gorsel" value="<?= e($a['og_gorsel']) ?>" placeholder="https://.../uploads/kapak.jpg"></label>
+
+  <h2>Adres birleştirme</h2>
+  <p><small>Siteye dört ayrı adresten ulaşılabilir (http/https, www'lu ve www'suz). Arama motorunun bunları kopya sayfa saymaması ve ziyaretçinin güvenli bağlantıda kalması için hepsi tek adrese yönlendirilir.</small></p>
+  <label style="display:flex;gap:.5rem;align-items:center;margin-bottom:1rem"><input type="checkbox" name="https_zorla" value="1" <?= $a['https_zorla'] === '1' ? 'checked' : '' ?> style="width:22px;height:22px"> http adresini https'e yönlendir</label>
+  <label class="alan"><span>Tercih edilen alan adı</span>
+    <select name="www_tercihi">
+      <option value="cikar" <?= $a['www_tercihi'] === 'cikar' ? 'selected' : '' ?>>www'suz (tykinsaat.com.tr)</option>
+      <option value="www" <?= $a['www_tercihi'] === 'www' ? 'selected' : '' ?>>www'lu (www.tykinsaat.com.tr)</option>
+      <option value="" <?= $a['www_tercihi'] === '' ? 'selected' : '' ?>>Yönlendirme yapma</option>
+    </select>
+    <small>SSL sertifikanız hangi adresi kapsıyorsa onu seçin. Sertifika yoksa https yönlendirmesini kapalı tutun.</small></label>
 
   <h2>Site doğrulama</h2>
   <label class="alan"><span>Google Search Console doğrulama kodu</span><input type="text" name="dogrulama_google" value="<?= e($a['dogrulama_google']) ?>" placeholder="google-site-verification içeriği">

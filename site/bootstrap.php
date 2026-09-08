@@ -18,6 +18,8 @@ if ($__db_var) {
     if (!defined('UPLOAD_URL')) define('UPLOAD_URL', 'uploads/');
 }
 require_once $__kok . '/inc/site.php';
+require_once $__kok . '/inc/guvenlik.php';
+adres_birlestir(sa('https_zorla', '1') === '1', sa('www_tercihi', 'cikar'));
 
 /* Varlık yolları: sayfa hem /site/ altından hem kökten (kök index.php
    ziyaretçiye siteyi dahil eder) servis edilebildiği için, yollar

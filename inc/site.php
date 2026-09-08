@@ -27,6 +27,8 @@ function site_varsayilan(): array {
         'seo_aciklama'    => 'İstanbul Üsküdar merkezli kuyu temel firması. Makineli ve el ile kuyu temel kazısı, ahşap iksa, betonarme perdeye hazır teslim. Ücretsiz keşif için arayın.',
         'seo_anahtar'     => 'kuyu temel, kuyu temel kazısı, istanbul kuyu temel, üsküdar kuyu temel, el ile kuyu kazısı, kuyu temel iksa, kuyu temel firması',
         'site_url'        => '',
+        'https_zorla'     => '1',
+        'www_tercihi'     => 'cikar',
         'og_gorsel'       => '',
         // Doğrulama ve ölçüm
         'dogrulama_google'=> '',
@@ -57,9 +59,15 @@ function site_ayarlar(): array {
     static $c = null;
     if ($c !== null) return $c;
     $c = site_varsayilan();
+    // Bu alanlarda boş değer bilinçli bir tercihtir; varsayılana geri dönmemeli.
+    $bos_kalabilir = ['www_tercihi', 'site_url', 'og_gorsel', 'harita_embed', 'maps_link',
+                      'dogrulama_google', 'dogrulama_bing', 'dogrulama_yandex',
+                      'analytics_id', 'gtm_id', 'ekstra_head'];
     try {
         foreach (rows("SELECT anahtar, deger FROM site_ayar") as $r) {
-            if ($r['deger'] !== null && $r['deger'] !== '') $c[$r['anahtar']] = $r['deger'];
+            if ($r['deger'] === null) continue;
+            if ($r['deger'] === '' && !in_array($r['anahtar'], $bos_kalabilir, true)) continue;
+            $c[$r['anahtar']] = $r['deger'];
         }
     } catch (Throwable $ex) { /* tablo henüz kurulmadıysa varsayılanlarla devam */ }
 

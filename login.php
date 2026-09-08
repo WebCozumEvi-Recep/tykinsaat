@@ -1,6 +1,8 @@
 <?php
 session_start();
 require_once __DIR__ . '/inc/db.php'; require_once __DIR__ . '/inc/helpers.php';
+require_once __DIR__ . '/inc/site.php'; require_once __DIR__ . '/inc/guvenlik.php';
+adres_birlestir(sa('https_zorla', '1') === '1', sa('www_tercihi', 'cikar'));
 if (!empty($_SESSION['uid'])) redirect('index.php');
 $hata = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
