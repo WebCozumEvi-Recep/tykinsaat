@@ -15,6 +15,23 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
+      - name: Gerekli secret'ları kontrol et
+        run: |
+          eksik=""
+          [ -n "${{ secrets.SSH_HOST }}" ] || eksik="$eksik SSH_HOST"
+          [ -n "${{ secrets.SSH_USER }}" ] || eksik="$eksik SSH_USER"
+          [ -n "${{ secrets.SSH_KEY }}"  ] || eksik="$eksik SSH_KEY"
+          [ -n "${{ secrets.APP_DIR }}"  ] || eksik="$eksik APP_DIR"
+          if [ -n "$eksik" ]; then
+            echo "Şu repo secret'ları tanımlı değil:$eksik"
+            echo "Settings > Secrets and variables > Actions bölümünden ekleyin."
+            exit 1
+          fi
+          case "${{ secrets.SSH_KEY }}" in
+            *"BEGIN "*"PRIVATE KEY"*) : ;;
+            *) echo "SSH_KEY bir özel anahtar gibi görünmüyor (BEGIN ... PRIVATE KEY satırı yok)."; exit 1 ;;
+          esac
+
       - name: SSH anahtarını hazırla
         run: |
           mkdir -p ~/.ssh
