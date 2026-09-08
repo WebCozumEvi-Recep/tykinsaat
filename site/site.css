@@ -248,3 +248,6 @@ section[id]{scroll-margin-top:5rem}
   .btn-panel{font-size:.95rem;padding:.45rem .7rem}
   .btn-panel .uzun{display:none}
 }
+
+/* firma logosu yüklendiyse markanın yerini alır */
+img.marka-im{width:auto;height:34px;max-width:150px;object-fit:contain}

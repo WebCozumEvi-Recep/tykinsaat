@@ -7,12 +7,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   try {
     $i = post('islem');
     if ($i === 'genel') {
+        // Ad, adres, telefon ve logo firma kaydında tutulur; panelin Ayarlar
+        // sayfasıyla ortaktır, iki yerde ayrı ayrı girilmez.
+        $f = firma_bilgi();
+        $logo = $f['logo'] ?? null;
+        if ($l = foto_yukle('logo')) $logo = $l[0];
+        q("UPDATE firma SET ad=?, adres=?, telefon=?, logo=? WHERE id=1",
+          [post('firma_ad'), post('adres'), post('telefon'), $logo]);
         site_kaydet([
-            'firma_ad'=>post('firma_ad'), 'slogan'=>post('slogan'),
+            'slogan'=>post('slogan'),
             'hero_baslik'=>post('hero_baslik'), 'hero_metin'=>post('hero_metin'),
-            'telefon'=>post('telefon'), 'telefon_link'=>preg_replace('/[^0-9+]/','',post('telefon_link')),
             'whatsapp'=>post('whatsapp'), 'whatsapp_link'=>preg_replace('/[^0-9]/','',post('whatsapp_link')),
-            'eposta'=>post('eposta'), 'adres'=>post('adres'), 'ilce'=>post('ilce'), 'sehir'=>post('sehir'),
+            'eposta'=>post('eposta'), 'ilce'=>post('ilce'), 'sehir'=>post('sehir'),
             'posta_kodu'=>post('posta_kodu'), 'saatler'=>post('saatler'),
             'yil_sayisi'=>post('yil_sayisi'), 'derinlik'=>post('derinlik'),
             'kuyu_sayisi'=>post('kuyu_sayisi'), 'ekip_sayisi'=>post('ekip_sayisi'),
@@ -92,10 +98,18 @@ try { val("SELECT 1 FROM site_ayar LIMIT 1"); } catch (Throwable $ex) { $kurulu 
 </nav>
 
 <?php if ($sekme === 'genel'): ?>
-<form method="post" class="kart"><?= csrf_field() ?><input type="hidden" name="islem" value="genel"><input type="hidden" name="s" value="genel">
-  <h2 style="margin-top:0">Ana sayfa</h2>
-  <div class="satir-form"><label class="alan"><span>Firma adı (sitede görünen)</span><input type="text" name="firma_ad" value="<?= e($a['firma_ad']) ?>"></label>
-  <label class="alan"><span>Slogan</span><input type="text" name="slogan" value="<?= e($a['slogan']) ?>"></label></div>
+<form method="post" enctype="multipart/form-data" class="kart"><?= csrf_field() ?><input type="hidden" name="islem" value="genel"><input type="hidden" name="s" value="genel">
+  <h2 style="margin-top:0">Firma kimliği</h2>
+  <p><small>Bu dört alan panelin Ayarlar sayfasıyla ortaktır. Buradan değiştirdiğinizde panelde ve sitede birlikte güncellenir; iki yere ayrı ayrı girmenize gerek yok.</small></p>
+  <div class="satir-form"><label class="alan"><span>Firma adı</span><input type="text" name="firma_ad" value="<?= e($a['firma_ad']) ?>"></label>
+  <label class="alan"><span>Telefon</span><input type="tel" name="telefon" value="<?= e($a['telefon']) ?>" placeholder="0216 000 00 00">
+    <small>Arama bağlantısı buradan otomatik üretilir: <?= e(tel_link($a['telefon'])) ?></small></label></div>
+  <label class="alan"><span>Adres</span><textarea name="adres" rows="2"><?= e($a['adres']) ?></textarea></label>
+  <label class="foto-alan"><?= ikon('image-square') ?> Logo yükle (PNG/JPG)<input type="file" name="logo[]" accept="image/*"></label>
+  <div class="onizleme"><?php if (!empty($a['logo'])): ?><img src="<?= UPLOAD_URL . e($a['logo']) ?>" alt="Firma logosu"><?php endif; ?></div>
+
+  <h2>Ana sayfa</h2>
+  <label class="alan"><span>Slogan</span><input type="text" name="slogan" value="<?= e($a['slogan']) ?>"></label>
   <label class="alan"><span>Ana başlık</span><input type="text" name="hero_baslik" value="<?= e($a['hero_baslik']) ?>"></label>
   <label class="alan"><span>Ana başlık altındaki metin</span><textarea name="hero_metin" rows="3"><?= e($a['hero_metin']) ?></textarea></label>
 
@@ -105,13 +119,10 @@ try { val("SELECT 1 FROM site_ayar LIMIT 1"); } catch (Throwable $ex) { $kurulu 
   <div class="satir-form"><label class="alan"><span>Açılan kuyu</span><input type="text" name="kuyu_sayisi" value="<?= e($a['kuyu_sayisi']) ?>"></label>
   <label class="alan"><span>Ekip sayısı</span><input type="text" name="ekip_sayisi" value="<?= e($a['ekip_sayisi']) ?>"></label></div>
 
-  <h2>İletişim</h2>
-  <div class="satir-form"><label class="alan"><span>Telefon (görünen)</span><input type="text" name="telefon" value="<?= e($a['telefon']) ?>"></label>
-  <label class="alan"><span>Telefon (arama linki)</span><input type="text" name="telefon_link" value="<?= e($a['telefon_link']) ?>" placeholder="+902160000000"></label></div>
+  <h2>Diğer iletişim kanalları</h2>
   <div class="satir-form"><label class="alan"><span>WhatsApp (görünen)</span><input type="text" name="whatsapp" value="<?= e($a['whatsapp']) ?>"></label>
   <label class="alan"><span>WhatsApp (wa.me numarası)</span><input type="text" name="whatsapp_link" value="<?= e($a['whatsapp_link']) ?>" placeholder="905000000000"></label></div>
   <label class="alan"><span>E-posta</span><input type="email" name="eposta" value="<?= e($a['eposta']) ?>"></label>
-  <label class="alan"><span>Adres</span><input type="text" name="adres" value="<?= e($a['adres']) ?>"></label>
   <div class="satir-form"><label class="alan"><span>İlçe</span><input type="text" name="ilce" value="<?= e($a['ilce']) ?>"></label>
   <label class="alan"><span>Şehir</span><input type="text" name="sehir" value="<?= e($a['sehir']) ?>"></label>
   <label class="alan"><span>Posta kodu</span><input type="text" name="posta_kodu" value="<?= e($a['posta_kodu']) ?>"></label></div>

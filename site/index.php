@@ -7,7 +7,7 @@ $sss = site_sss();
 $gal = site_galeri();
 $kok = site_adres();
 $konum = trim($a['ilce'] . ', ' . $a['sehir'], ', ');
-$tel_link = 'tel:' . preg_replace('/[^0-9+]/', '', $a['telefon_link'] ?: $a['telefon']);
+$tel_link = 'tel:' . $a['telefon_link'];
 $wa_link  = 'https://wa.me/' . preg_replace('/[^0-9]/', '', $a['whatsapp_link']);
 
 // Yapılandırılmış veri: yerel işletme + hizmet listesi + sık sorulanlar
@@ -82,6 +82,9 @@ $ld = [
 <header class="ust">
   <div class="ust-ic">
     <a class="marka" href="#tepe">
+      <?php if (!empty($a['logo'])): ?>
+      <img class="marka-im" src="<?= PANEL . UPLOAD_URL . e($a['logo']) ?>" alt="<?= e($a['firma_ad']) ?> logosu">
+      <?php else: ?>
       <svg class="marka-im" viewBox="0 0 32 32" aria-hidden="true">
         <rect x="1" y="4" width="30" height="4" fill="#C9A227"/>
         <rect x="1" y="8" width="30" height="5" fill="#B4603C"/>
@@ -90,6 +93,7 @@ $ld = [
         <rect x="12" y="4" width="8" height="24" fill="#EEF1F3"/>
         <rect x="12" y="4" width="8" height="3" fill="#F2B705"/>
       </svg>
+      <?php endif; ?>
       <span><b><?= e(mb_strtoupper($a['firma_ad'], 'UTF-8')) ?></b><span><?= e($konum) ?></span></span>
     </a>
     <nav class="menu" aria-label="Bölümler">

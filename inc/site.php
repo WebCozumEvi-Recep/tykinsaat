@@ -9,7 +9,7 @@ function site_varsayilan(): array {
         'hero_baslik'     => 'Toprak kaymasın diye, kuyu kuyu ilerliyoruz.',
         'hero_metin'      => 'Kuyu temel işi yapıyoruz. Kuyuyu makineyle veya el ile kazıyor, ilerledikçe ahşap iksa ile tahkim ediyor, kenarları açıp betonarme perdeye hazır teslim ediyoruz.',
         'telefon'         => '0216 000 00 00',
-        'telefon_link'    => '+902160000000',
+        'logo'            => '',
         'whatsapp'        => '0500 000 00 00',
         'whatsapp_link'   => '905000000000',
         'eposta'          => 'info@tykinsaat.com',
@@ -44,6 +44,15 @@ function site_varsayilan(): array {
     ];
 }
 
+/** Ayarlar > Firma bilgileri kaydı. Ad, adres, telefon ve logo tek yerden yönetilir. */
+function firma_bilgi(): array {
+    static $f = null;
+    if ($f !== null) return $f;
+    try { $f = row("SELECT * FROM firma WHERE id=1") ?: []; }
+    catch (Throwable $ex) { $f = []; }
+    return $f;
+}
+
 function site_ayarlar(): array {
     static $c = null;
     if ($c !== null) return $c;
@@ -53,7 +62,25 @@ function site_ayarlar(): array {
             if ($r['deger'] !== null && $r['deger'] !== '') $c[$r['anahtar']] = $r['deger'];
         }
     } catch (Throwable $ex) { /* tablo henüz kurulmadıysa varsayılanlarla devam */ }
+
+    // Firma kaydı site ayarlarını ezer: bu alanlar iki yerde ayrı ayrı girilmez.
+    $f = firma_bilgi();
+    if (!empty($f['ad']))      $c['firma_ad'] = $f['ad'];
+    if (!empty($f['adres']))   $c['adres']    = $f['adres'];
+    if (!empty($f['telefon'])) $c['telefon']  = $f['telefon'];
+    $c['logo'] = $f['logo'] ?? '';
+    $c['telefon_link'] = tel_link($c['telefon']);
     return $c;
+}
+
+/** Görünen telefonu tıklanabilir hale getirir: "0216 000 00 00" -> "+902160000000" */
+function tel_link(string $t): string {
+    $r = preg_replace('/[^0-9+]/', '', $t);
+    if (str_starts_with($r, '+')) return $r;
+    if (str_starts_with($r, '00')) return '+' . substr($r, 2);
+    if (str_starts_with($r, '0'))  return '+90' . substr($r, 1);
+    if (strlen($r) === 10)         return '+90' . $r;
+    return $r;
 }
 function sa(string $k, string $d = ''): string { $a = site_ayarlar(); return (string)($a[$k] ?? $d); }
 function site_kaydet(array $veri): void {

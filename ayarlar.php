@@ -18,6 +18,7 @@ $baslik = 'Ayarlar'; include 'inc/layout_top.php'; ?>
 <form method="post" style="display:flex;gap:.5rem;margin-top:.75rem;flex-wrap:wrap"><?= csrf_field() ?><input type="hidden" name="islem" value="kat_ekle"><input type="text" name="ikon" placeholder="Emoji" style="width:80px;text-align:center"><input type="text" name="ad" placeholder="Kategori adı" required style="flex:1;min-width:140px"><input type="number" name="sira" placeholder="Sıra" style="width:80px"><button class="btn btn-kucuk">Ekle</button></form></div>
 
 <h2>Firma bilgileri</h2>
+<p><small>Ad, adres, telefon ve logo web sitesinde de bu kayıttan okunur; <a href="site_yonetimi.php?s=genel">Site Yönetimi</a> sayfasından da düzenleyebilirsiniz.</small></p>
 <form method="post" enctype="multipart/form-data" class="kart"><?= csrf_field() ?><input type="hidden" name="islem" value="firma">
 <label class="alan"><span>Firma adı</span><input type="text" name="ad" value="<?= e($firma['ad']) ?>"></label>
 <div class="satir-form"><label class="alan"><span>Vergi no</span><input type="text" name="vergi_no" value="<?= e($firma['vergi_no']) ?>"></label><label class="alan"><span>Telefon</span><input type="tel" name="telefon" value="<?= e($firma['telefon']) ?>"></label></div>
