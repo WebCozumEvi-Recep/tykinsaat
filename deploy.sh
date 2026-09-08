@@ -14,7 +14,7 @@ git -C "$REPO_DIR" pull --ff-only
 
 echo "→ Yayınlanıyor: $TARGET"
 rsync -a --delete \
-  --exclude='.git' --exclude='.gitignore' \
+  --exclude='.git' --exclude='.gitignore' --exclude='.github' \
   --exclude='*.sql' \
   --exclude='config.php' --exclude='config.ornek.php' \
   --exclude='deploy.sh' --exclude='DEPLOY.md' --exclude='README.md' \

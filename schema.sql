@@ -1,6 +1,7 @@
 -- ŞantiyeTakip veritabanı şeması (MySQL 5.7+/8, utf8mb4)
-CREATE DATABASE IF NOT EXISTS santiye_takip CHARACTER SET utf8mb4 COLLATE utf8mb4_turkish_ci;
-USE santiye_takip;
+-- Not: veritabanı önceden oluşturulmuş olmalı; bu dosya SEÇİLİ veritabanına yüklenir.
+--   Yerel:   mysql -u kullanici -p veritabani < schema.sql
+--   Hestia:  Hestia'da DB'yi oluştur, sonra bu dosyayı ona yükle.
 
 CREATE TABLE firma (
   id INT PRIMARY KEY AUTO_INCREMENT,
