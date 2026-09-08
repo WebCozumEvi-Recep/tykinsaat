@@ -1,5 +1,9 @@
 <?php
-require_once __DIR__ . '/inc/auth.php'; login_gerekli();
+require_once __DIR__ . '/inc/auth.php';
+// Sunucu nginx olduğu için .htaccess yönlendirmesi çalışmaz: giriş yapmamış
+// ziyaretçiye tanıtım sitesini, giriş yapmış kullanıcıya paneli göster.
+if (!user()) { require __DIR__ . '/site/index.php'; exit; }
+login_gerekli();
 $bugun = date('Y-m-d');
 if (!finans_gorur()) {
     // ---- SAHA MODU ----

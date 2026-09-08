@@ -61,7 +61,7 @@ $ld = [
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="site.css">
+<link rel="stylesheet" href="<?= VARLIK ?>site.css">
 <script type="application/ld+json"><?= json_encode($ld, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) ?></script>
 <?php if ($a['analytics_id']): ?>
 <script async src="https://www.googletagmanager.com/gtag/js?id=<?= e($a['analytics_id']) ?>"></script>
@@ -99,7 +99,7 @@ $ld = [
       <a href="#referanslar">Referanslar</a>
       <a href="#iletisim">İletişim</a>
     </nav>
-    <a class="btn btn-panel" href="../login.php">
+    <a class="btn btn-panel" href="<?= PANEL ?>login.php">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
         <rect x="4" y="10.5" width="16" height="10" rx="1.5"/><path d="M8 10.5V7a4 4 0 0 1 8 0v3.5"/>
       </svg>
@@ -270,7 +270,7 @@ $ld = [
       <ul class="galeri">
         <?php foreach ($gal as $g): ?>
         <li><figure style="margin:0">
-          <img src="<?= UPLOAD_URL . e($g['dosya']) ?>" alt="<?= e($g['aciklama'] ?: 'Kuyu temel uygulaması') ?>" loading="lazy">
+          <img src="<?= PANEL . UPLOAD_URL . e($g['dosya']) ?>" alt="<?= e($g['aciklama'] ?: 'Kuyu temel uygulaması') ?>" loading="lazy">
           <?php if ($g['aciklama']): ?><figcaption><?= e($g['aciklama']) ?></figcaption><?php endif; ?>
         </figure></li>
         <?php endforeach; ?>
@@ -359,7 +359,7 @@ $ld = [
 <footer class="alt">
   <div class="kap alt-ic">
     <span>&copy; <?= date('Y') ?> <?= e($a['firma_ad']) ?>, <?= e($konum) ?></span>
-    <a href="../login.php">Saha Takip Girişi</a>
+    <a href="<?= PANEL ?>login.php">Saha Takip Girişi</a>
     <span class="alt-son">Kuyu temel kazısı, ahşap iksa ve kenar açma işleri. İstanbul Anadolu Yakası genelinde hizmet.</span>
   </div>
 </footer>

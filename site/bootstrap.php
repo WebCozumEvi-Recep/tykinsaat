@@ -19,6 +19,13 @@ if ($__db_var) {
 }
 require_once $__kok . '/inc/site.php';
 
+/* Sayfa /site/ altından mı yoksa kökten mi servis ediliyor?
+   nginx'te .htaccess çalışmadığı için kök index.php siteyi doğrudan dahil eder. */
+$__dizin = rtrim(str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME'] ?? '')), '/');
+$__site_altinda = substr($__dizin, -5) === '/site' || $__dizin === '/site';
+define('VARLIK', $__site_altinda ? '' : 'site/');   // css, sitemap gibi site dosyaları
+define('PANEL',  $__site_altinda ? '../' : '');     // login.php gibi panel dosyaları
+
 /** Sitenin kendi adresi (canonical, sitemap, JSON-LD için). */
 function site_adres(): string {
     $u = sa('site_url');
